@@ -87,3 +87,29 @@ class PropertyOffer(models.Model):
                 'selling_price': 0,
                 'state': 'received'
             })
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        if property_id:
+            accepted_offer_exists = self.search([('property_id', '=', property_id), ('status', '=', 'accepted')],
+                                                limit=1)
+            if accepted_offer_exists:
+                raise UserError("Cannot create a new offer. An accepted offer already exists.")
+
+            property_record = self.env['estate.property'].browse(property_id)
+
+            min_price_offer = self.search([('property_id', '=', property_id)], order='price asc', limit=1)
+            if min_price_offer and vals.get('price', 0) < min_price_offer.price:
+                raise UserError("Cannot create a new offer. Price is below the minimum price.")
+
+            property_record.write({'state': 'received'})
+
+        return super(PropertyOffer, self).create(vals)
+
+    @api.model
+    def unlink(self):
+        for offer in self:
+            if offer.status == 'accepted' or offer.status == 'refused':
+                raise UserError("Cannot delete offer with status 'accepted' or 'refused'.")
+        return super(PropertyOffer, self).unlink()
