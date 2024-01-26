@@ -43,3 +43,8 @@ class PropertyOffer(models.Model):
     def _clean_offers(self):
         self.search([('status', '=', 'refused')]).unlink()
 
+    @api.constrains('validity')
+    def _check_validity(self):
+        for rec in self:
+            if rec.deadline <= rec.creation_date:
+                raise ValidationError(_("Deadline cannot be before creation date"))
