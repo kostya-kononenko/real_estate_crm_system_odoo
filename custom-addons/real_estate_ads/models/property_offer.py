@@ -18,7 +18,11 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string='Property')
     validity = fields.Integer(string='Validity', default=7)
     deadline = fields.Date(string='Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
-    creation_date = fields.Date(string='Creation Date')
+
+    @api.model
+    def _set_create_date(self):
+        return fields.Date.today()
+    creation_date = fields.Date(string='Creation Date', default=_set_create_date)
 
     @api.depends('validity', 'creation_date')
     def _compute_deadline(self):
@@ -38,3 +42,4 @@ class PropertyOffer(models.Model):
     @api.autovacuum
     def _clean_offers(self):
         self.search([('status', '=', 'refused')]).unlink()
+
