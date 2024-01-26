@@ -43,6 +43,13 @@ class Property(models.Model):
     phone = fields.Char(string='Phone', related='buyer_id.phone')
     total_area = fields.Integer(string='Total Area', compute='_onchange_total_area')
 
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for rec in self:
+            rec.offer_count = len(rec.offer_ids)
+
+    offer_count = fields.Integer(string='Offer Count', compute=_compute_offer_count)
+
     @api.onchange('living_area', 'garden_area')
     def _onchange_total_area(self):
         self.total_area = self.living_area + self.garden_area
@@ -52,6 +59,15 @@ class Property(models.Model):
 
     def action_cancel(self):
         self.state = 'cancel'
+
+    def action_property_view_offers(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f"{self.name} - Offers",
+            'domain': [('property_id', '=', self.id)],
+            'view_mode': 'tree',
+            'res_model': 'estate.property.offer'
+        }
 
 
 class PropertyType(models.Model):

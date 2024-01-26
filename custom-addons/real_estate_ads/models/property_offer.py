@@ -9,7 +9,15 @@ class PropertyOffer(models.Model):
     _description = 'Estate Property Offers'
     _order = 'price desc'
 
-    name = fields.Char(string='Description')
+    @api.depends('property_id', 'partner_id')
+    def _compute_name(self):
+        for rec in self:
+            if rec.property_id and rec.partner_id:
+                rec.name = f"{rec.property_id.name} - {rec.partner_id.name}"
+            else:
+                rec.name = False
+
+    name = fields.Char(string='Description', compute=_compute_name)
     price = fields.Float(string='Price')
     status = fields.Selection([('accepted', 'Accepted'),
                                ('refused', 'Refused')],
@@ -22,6 +30,7 @@ class PropertyOffer(models.Model):
     @api.model
     def _set_create_date(self):
         return fields.Date.today()
+
     creation_date = fields.Date(string='Creation Date', default=_set_create_date)
 
     @api.depends('validity', 'creation_date')
@@ -48,3 +57,4 @@ class PropertyOffer(models.Model):
         for rec in self:
             if rec.deadline <= rec.creation_date:
                 raise ValidationError(_("Deadline cannot be before creation date"))
+
