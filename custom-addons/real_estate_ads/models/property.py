@@ -3,7 +3,6 @@ from odoo import fields, models
 
 class Property(models.Model):
     _name = 'estate.property'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Estate Properties'
     _order = 'id desc'
 
@@ -11,7 +10,7 @@ class Property(models.Model):
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From')
-    expected_price = fields.Float(string='Expected Price', tracking=True)
+    expected_price = fields.Float(string='Expected Price')
     best_offer = fields.Float(string='Best Offer', compute='_compute_best_price')
     selling_price = fields.Float(string='Selling Price', readonly=True)
     bedrooms = fields.Integer(string='Bedrooms')
