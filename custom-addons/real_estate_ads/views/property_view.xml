@@ -49,6 +49,7 @@
                                     <field name="garden" widget="boolean_toggle"/>
                                     <field name="garden_area" invisible="garden != True"/>
                                     <field name="garden_orientation" invisible="garden != True" widget="selection_badge"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">

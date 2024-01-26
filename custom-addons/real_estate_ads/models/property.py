@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class Property(models.Model):
@@ -31,6 +31,11 @@ class Property(models.Model):
     sales_id = fields.Many2one('res.users', string='Salesman')
     buyer_id = fields.Many2one('res.partner', string='Buyer', domain=[('is_company', '=', True)])
     phone = fields.Char(string='Phone', related='buyer_id.phone')
+    total_area = fields.Integer(string='Total Area', compute='_onchange_total_area')
+
+    @api.onchange('living_area', 'garden_area')
+    def _onchange_total_area(self):
+        self.total_area = self.living_area + self.garden_area
 
 
 class PropertyType(models.Model):
