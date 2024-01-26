@@ -58,3 +58,32 @@ class PropertyOffer(models.Model):
             if rec.deadline <= rec.creation_date:
                 raise ValidationError(_("Deadline cannot be before creation date"))
 
+    def _validate_accepted_offer(self):
+        offer_ids = self.env['estate.property.offer'].search([
+            ('property_id', '=', self.property_id.id),
+            ('status', '=', 'accepted'),
+        ])
+        if offer_ids:
+            raise ValidationError("Offer already accepted")
+
+    def _validate_accepted_price_offer(self, expected_price, selling_price):
+        if selling_price < expected_price * 0.9:
+            raise ValidationError("Selling Price cannot be 90% or more below Expected Price.")
+
+    def action_accept_offers(self):
+        if self.property_id:
+            self._validate_accepted_offer()
+            self._validate_accepted_price_offer(self.property_id.expected_price, self.price)
+            self.property_id.write({
+                'selling_price': self.price,
+                'state': 'accepted',
+            })
+        self.status = 'accepted'
+
+    def action_decline_offers(self):
+        self.status = 'refused'
+        if all(self.property_id.offer_ids.mapped('status')):
+            self.property_id.write({
+                'selling_price': 0,
+                'state': 'received'
+            })
