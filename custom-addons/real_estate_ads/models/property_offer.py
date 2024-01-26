@@ -34,3 +34,7 @@ class PropertyOffer(models.Model):
                 rec.validity = (rec.deadline - rec.creation_date).days
             else:
                 rec.validity = False
+
+    @api.autovacuum
+    def _clean_offers(self):
+        self.search([('status', '=', 'refused')]).unlink()
