@@ -37,30 +37,53 @@
                                 <field name="best_offer"/>
                                 <field name="selling_price"/>
                             </group>
-                            <field name="offer_ids">
-                                <tree>
-                                    <field name="price" readonly="status in ['accepted', 'refused']"/>
-                                    <field name="partner_id" readonly="status in ['accepted', 'refused']"/>
-                                    <field name="validity" readonly="status in ['accepted', 'refused']"/>
-                                    <field name="deadline" readonly="status in ['accepted', 'refused']"/>
-                                    <field name="status" readonly="1"/>
-                                </tree>
-                            </field>
                         </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage" widget="boolean_toggle"/>
+                                    <field name="garden" widget="boolean_toggle"/>
+                                    <field name="garden_area" invisible="garden != True"/>
+                                    <field name="garden_orientation" invisible="garden != True" widget="selection_badge"/>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <field name="offer_ids">
+                                    <tree editable="bottom">
+                                        <field name="price" readonly="status in ['accepted', 'refused']"/>
+                                        <field name="partner_id" readonly="status in ['accepted', 'refused']"/>
+                                        <field name="validity" readonly="status in ['accepted', 'refused']"/>
+                                        <field name="deadline" readonly="status in ['accepted', 'refused']"/>
+                                        <field name="status" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="sales_id" widget="many2one_avatar_user"/>
+                                    <field name="buyer_id"/>
+                                    <field name="phone" widget="phone"/>
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
-         <record id="action_property" model="ir.actions.act_window">
-             <field name="name">Property</field>
-             <field name="res_model">estate.property</field>
-             <field name="view_mode">tree,form</field>
-             <field name="view_id" ref="estate_property_tree_view"/>
-             <field name="help" type="html">
-                 <p class="o_view_noconten_smiling_face">
+        <record id="action_property" model="ir.actions.act_window">
+            <field name="name">Property</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="estate_property_tree_view"/>
+            <field name="help" type="html">
+                <p class="o_view_noconten_smiling_face">
                         Create a property to Advertise
-                 </p>
-             </field>
-         </record>
+                </p>
+            </field>
+        </record>
     </data>
 </odoo>
