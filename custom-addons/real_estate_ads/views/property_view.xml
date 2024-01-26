@@ -93,6 +93,20 @@
                 </form>
             </field>
         </record>
+        <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'received'))]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Status" name='group_by_state' context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+        </record>
         <record id="action_property" model="ir.actions.act_window">
             <field name="name">Property</field>
             <field name="res_model">estate.property</field>
