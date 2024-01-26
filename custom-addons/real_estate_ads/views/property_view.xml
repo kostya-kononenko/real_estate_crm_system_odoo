@@ -23,6 +23,11 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button name="action_sold" type="object" string="Sold" class="btn btn-primary" invisible="state == 'sold'"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn btn-danger" invisible="state == 'sold'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new, received, accepted, sold"/>
+                    </header>
                     <sheet>
                         <group>
                             <field name="name" widget="char_emojis" placeholder="Property Name"/>

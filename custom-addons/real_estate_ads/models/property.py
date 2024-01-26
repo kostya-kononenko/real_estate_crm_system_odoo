@@ -7,6 +7,16 @@ class Property(models.Model):
     _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
+    state = fields.Selection(
+        [
+            ('new', 'New'),
+            ('received', 'Offer Received'),
+            ('accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancel', 'Cancel')
+        ],
+        default='new',
+        string='Status')
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
     type_id = fields.Many2one('estate.property.type', string='Property Type')
     description = fields.Text(string='Description')
@@ -36,6 +46,12 @@ class Property(models.Model):
     @api.onchange('living_area', 'garden_area')
     def _onchange_total_area(self):
         self.total_area = self.living_area + self.garden_area
+
+    def action_sold(self):
+        self.state = 'sold'
+
+    def action_cancel(self):
+        self.state = 'cancel'
 
 
 class PropertyType(models.Model):
