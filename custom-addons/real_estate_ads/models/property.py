@@ -27,6 +27,7 @@ class Property(models.Model):
                                            ('west', 'West')],
                                           string='Garden Orientation',
                                           default='north')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
 
 class PropertyType(models.Model):

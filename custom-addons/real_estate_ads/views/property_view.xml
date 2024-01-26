@@ -37,6 +37,15 @@
                                 <field name="best_offer"/>
                                 <field name="selling_price"/>
                             </group>
+                            <field name="offer_ids">
+                                <tree>
+                                    <field name="price" readonly="status in ['accepted', 'refused']"/>
+                                    <field name="partner_id" readonly="status in ['accepted', 'refused']"/>
+                                    <field name="validity" readonly="status in ['accepted', 'refused']"/>
+                                    <field name="deadline" readonly="status in ['accepted', 'refused']"/>
+                                    <field name="status" readonly="1"/>
+                                </tree>
+                            </field>
                         </group>
                     </sheet>
                 </form>
