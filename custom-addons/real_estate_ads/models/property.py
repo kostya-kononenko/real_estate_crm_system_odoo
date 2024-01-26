@@ -7,12 +7,13 @@ class Property(models.Model):
     _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
+    tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
     type_id = fields.Many2one('estate.property.type', string='Property Type')
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From')
     expected_price = fields.Float(string='Expected Price')
-    best_offer = fields.Float(string='Best Offer', compute='_compute_best_price')
+    best_offer = fields.Float(string='Best Offer')
     selling_price = fields.Float(string='Selling Price', readonly=True)
     bedrooms = fields.Integer(string='Bedrooms')
     living_area = fields.Integer(string='Living Area(sqm)')
@@ -38,4 +39,17 @@ class PropertyType(models.Model):
 
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Name must be unique.'),
+    ]
+
+
+class PropertyTags(models.Model):
+    _name = 'estate.property.tag'
+    _description = 'Estate Properties Tag'
+    _order = 'name'
+
+    name = fields.Char(string='Name', required=True)
+    color = fields.Integer(string='Color')
+
+    _sql_constraints = [
+        ('unique_name', 'UNIQUE(name)', 'Name must be unique.'),
     ]
