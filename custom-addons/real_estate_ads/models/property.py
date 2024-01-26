@@ -7,6 +7,7 @@ class Property(models.Model):
     _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
+    type_id = fields.Many2one('estate.property.type', string='Property Type')
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From')
@@ -25,3 +26,16 @@ class Property(models.Model):
                                            ('west', 'West')],
                                           string='Garden Orientation',
                                           default='north')
+
+
+class PropertyType(models.Model):
+    _name = 'estate.property.type'
+    _description = 'Estate Properties Type'
+    _order = 'sequence, name'
+
+    name = fields.Char(string='Name', required=True)
+    sequence = fields.Integer(string='Sequence', default=10)
+
+    _sql_constraints = [
+        ('unique_name', 'unique(name)', 'Name must be unique.'),
+    ]
