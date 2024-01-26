@@ -77,6 +77,12 @@ class Property(models.Model):
             else:
                 rec.best_offer = 0
 
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price >= 0)', 'Expected Price must be positive.'),
+        ('positive_best_offer', 'CHECK(best_offer >= 0)', 'Best Offer must be positive.'),
+        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling Price must be positive.'),
+    ]
+
 
 class PropertyType(models.Model):
     _name = 'estate.property.type'
