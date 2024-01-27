@@ -26,6 +26,9 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string='Property')
     validity = fields.Integer(string='Validity', default=7)
     deadline = fields.Date(string='Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
+    type_id = fields.Many2one(
+        "estate.property.type", related="property_id.type_id", string="Property Type", store=True
+    )
 
     @api.model
     def _set_create_date(self):
@@ -117,7 +120,6 @@ class PropertyOffer(models.Model):
 
         return super(PropertyOffer, self).create(vals)
 
-    @api.model
     def unlink(self):
         for offer in self:
             if offer.status == 'accepted' or offer.status == 'refused':

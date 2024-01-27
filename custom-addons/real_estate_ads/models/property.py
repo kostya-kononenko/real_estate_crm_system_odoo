@@ -97,6 +97,30 @@ class PropertyType(models.Model):
 
     name = fields.Char(string='Name', required=True)
     sequence = fields.Integer(string='Sequence', default=10)
+    property_ids = fields.One2many("estate.property", "type_id", string="Properties")
+    offer_count = fields.Integer(string="Offers Count", compute="_compute_offer")
+    offer_ids = fields.One2many("estate.property.offer", "type_id", string="Offers")
+
+    def _compute_offer(self):
+        data = self.env["estate.property.offer"].read_group(
+            [("property_id.state", "!=", "cancel"), ("type_id", "!=", False)],
+            ["ids:array_agg(id)", "type_id"],
+            ["type_id"],
+        )
+        mapped_count = {d["type_id"][0]: d["type_id_count"] for d in data}
+        mapped_ids = {d["type_id"][0]: d["ids"] for d in data}
+        for prop_type in self:
+            prop_type.offer_count = mapped_count.get(prop_type.id, 0)
+            prop_type.offer_ids = mapped_ids.get(prop_type.id, [])
+
+    def action_view_offers(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f"{self.name} - Offers",
+            'domain': [('type_id', '=', self.id)],
+            'view_mode': 'tree,form',
+            'res_model': 'estate.property.offer',
+        }
 
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Name must be unique.'),
