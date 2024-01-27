@@ -122,4 +122,4 @@ class PropertyOffer(models.Model):
         for offer in self:
             if offer.status == 'accepted' or offer.status == 'refused':
                 raise UserError("Cannot delete offer with status 'accepted' or 'refused'.")
-        return super(PropertyOffer, self).unlink()
+        return super().unlink()

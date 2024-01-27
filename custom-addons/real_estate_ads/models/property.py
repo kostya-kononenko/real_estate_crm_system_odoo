@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError, UserError
 
 
 class Property(models.Model):
@@ -82,6 +83,11 @@ class Property(models.Model):
         ('positive_best_offer', 'CHECK(best_offer >= 0)', 'Best Offer must be positive.'),
         ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling Price must be positive.'),
     ]
+
+    def unlink(self):
+        if not set(self.mapped("state")) <= {"new", "canceled"}:
+            raise UserError("Cannot delete offer with status 'received' or 'accepted' or 'sold'.")
+        return super().unlink()
 
 
 class PropertyType(models.Model):
