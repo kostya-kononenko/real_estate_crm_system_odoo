@@ -12,5 +12,5 @@ class EstateProperty(models.Model):
         for val in vals_list:
             sales_person_property_ids = self.env[self._name].search_count([("sales_id", "=", val.get("sales_id"))])
             if sales_person_property_ids > 2:
-                raise ValidationError("User alredy have 2 sales per property")
+                raise ValidationError("User already have 2 sales per property")
         return super(EstateProperty, self).create(vals_list)
