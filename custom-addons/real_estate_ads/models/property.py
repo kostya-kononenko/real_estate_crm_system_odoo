@@ -85,7 +85,7 @@ class Property(models.Model):
     ]
 
     def unlink(self):
-        if not set(self.mapped("state")) <= {"new", "canceled"}:
+        if not set(self.mapped("state")) <= {"new", "cancel"}:
             raise UserError("Cannot delete offer with status 'received' or 'accepted' or 'sold'.")
         return super().unlink()
 

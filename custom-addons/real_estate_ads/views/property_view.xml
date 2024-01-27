@@ -42,30 +42,30 @@
                             </button>
                         </div>
                         <group>
-                            <field name="name" widget="char_emojis" placeholder="Property Name"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="name" widget="char_emojis" placeholder="Property Name" readonly="state in ['accepted', 'sold']"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="state in ['accepted', 'sold']"/>
                             <group>
-                                <field name="type_id"/>
-                                <field name="postcode"/>
-                                <field name="date_availability"/>
+                                <field name="type_id" readonly="state in ['accepted', 'sold']"/>
+                                <field name="postcode" readonly="state in ['accepted', 'sold']"/>
+                                <field name="date_availability" readonly="state in ['accepted', 'sold']"/>
                             </group>
                             <group>
-                                <field name="expected_price"/>
-                                <field name="best_offer"/>
-                                <field name="selling_price"/>
+                                <field name="expected_price" readonly="state in ['accepted', 'sold']"/>
+                                <field name="best_offer" readonly="state in ['accepted', 'sold']"/>
+                                <field name="selling_price" readonly="state in ['accepted', 'sold']"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Description">
                                 <group>
-                                    <field name="description"/>
-                                    <field name="bedrooms"/>
-                                    <field name="living_area"/>
-                                    <field name="facades"/>
-                                    <field name="garage" widget="boolean_toggle"/>
-                                    <field name="garden" widget="boolean_toggle"/>
-                                    <field name="garden_area" invisible="garden != True"/>
-                                    <field name="garden_orientation" invisible="garden != True" widget="selection_badge"/>
+                                    <field name="description" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="bedrooms" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="living_area" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="facades" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="garage" widget="boolean_toggle" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="garden" widget="boolean_toggle" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="garden_area" invisible="garden != True" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="garden_orientation" invisible="garden != True" widget="selection_badge" readonly="state in ['accepted', 'sold']"/>
                                     <field name="total_area"/>
                                 </group>
                             </page>
@@ -84,9 +84,9 @@
                             </page>
                             <page string="Other Info">
                                 <group>
-                                    <field name="sales_id" widget="many2one_avatar_user"/>
-                                    <field name="buyer_id"/>
-                                    <field name="phone" widget="phone"/>
+                                    <field name="sales_id" widget="many2one_avatar_user" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="buyer_id" readonly="state in ['accepted', 'sold']"/>
+                                    <field name="phone" widget="phone" readonly="state in ['accepted', 'sold']"/>
                                 </group>
                             </page>
                         </notebook>
