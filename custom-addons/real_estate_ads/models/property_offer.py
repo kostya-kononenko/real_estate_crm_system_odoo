@@ -97,6 +97,16 @@ class PropertyOffer(models.Model):
             if accepted_offer_exists:
                 raise UserError("Cannot create a new offer. An accepted offer already exists.")
 
+            property_sold = self.env['estate.property'].search([('id', '=', property_id), ('state', '=', 'sold')],
+                                                               limit=1)
+            if property_sold:
+                raise UserError("It is not possible to create an offer if the property is sold.")
+
+            property_cancel = self.env['estate.property'].search([('id', '=', property_id), ('state', '=', 'cancel')],
+                                                               limit=1)
+            if property_cancel:
+                raise UserError("It is not possible to create an offer if the property is canceled")
+
             property_record = self.env['estate.property'].browse(property_id)
 
             min_price_offer = self.search([('property_id', '=', property_id)], order='price asc', limit=1)
