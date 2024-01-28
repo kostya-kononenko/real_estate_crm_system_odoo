@@ -9,6 +9,6 @@
         "views/res_users.xml",
 
     ],
-    "installable": True,
+    "auto_install": True,
     'license': 'LGPL-3',
 }

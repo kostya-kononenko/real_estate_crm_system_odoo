@@ -14,7 +14,7 @@
                 <tree decoration-success="state == 'received'" decoration-muted="state == 'sold'" decoration-bf="state == 'accepted'">
                     <field name="name"/>
                     <field name="type_id"/>
-                    <field name="tag_ids"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <field name="postcode"/>
                     <field name="bedrooms"/>
                     <field name="living_area"/>
